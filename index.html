@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Sentiment Analysis</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      form {
+        margin: 50px auto;
+        max-width: 500px;
+        text-align: center;
+      }
+
+      label {
+        font-size: 1.2rem;
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      textarea {
+        border-radius: 5px;
+        padding: 10px;
+        width: 100%;
+        font-size: 1.2rem;
+      }
+
+      button {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 1.2rem;
+        border-radius: 5px;
+        margin-top: 10px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #3e8e41;
+      }
+
+      #result {
+        margin: 50px auto;
+        max-width: 500px;
+        text-align: center;
+      }
+
+      p {
+        font-size: 1.2rem;
+      }
+
+      .positive {
+        color: green;
+      }
+
+      .negative {
+        color: red;
+      }
+
+      .neutral {
+        color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <form>
+      <label for="text-input">Enter Text:</label>
+      <br>
+      <textarea id="text-input" name="text" rows="4" cols="50"></textarea>
+      <br>
+      <button type="submit">Analyze</button>
+    </form>
+  
+    <div id="result"></div>
+
+    <script>
+      const form = document.querySelector('form');
+      const resultDiv = document.querySelector('#result');
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const text = document.querySelector('#text-input').value;
+
+        const response = await fetch('/sentiment', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ text })
+        });
+
+        const result = await response.json();
+
+        let sentimentClass = 'neutral';
+
+        if (result.sentiment === 'positive') {
+          sentimentClass = 'positive';
+        } else if (result.sentiment === 'negative') {
+          sentimentClass = 'negative';
+        }
+
+        resultDiv.innerHTML = `
+          <p class="${sentimentClass}">Sentiment: ${result.sentiment}</p>
+          <p>Confidence: ${result.confidence}</p>
+        `;
+      });
+    </script>
+  </body>
+</html>
