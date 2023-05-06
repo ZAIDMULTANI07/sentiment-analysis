@@ -14,4 +14,5 @@ Usage Start the server using node index.js
 Dependencies 
    @tensorflow/tfjs: A library for machine learning in JavaScript 
    express: A web application framework for Node.js
-   sentiment: A library for performing sentiment analysis on text Created By: Md.zaid
+   sentiment: A library for performing sentiment analysis on text 
+   Created By: Md.zaid
